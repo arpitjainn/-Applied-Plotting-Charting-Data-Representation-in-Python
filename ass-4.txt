@@ -1,0 +1,43 @@
+infulation_rate_df = pd.read_csv(r'F:\\Data Plotting\\Assignment 4\\Arab_Countries.csv',error_bad_lines=False)
+infulation_rate_df = infulation_rate_df.fillna(0)
+infulation_rate_df = infulation_rate_df.T
+new_header = infulation_rate_df.iloc[0] #grab the first row for the header
+infulation_rate_df = infulation_rate_df[1:] #take the data less the header row
+infulation_rate_df.columns = new_header
+infulation_rate_df = infulation_rate_df[3:]
+Egypt_Inf = pd.DataFrame({'Year':infulation_rate_df.index[:58],'Egypt':infulation_rate_df['Egypt, Arab Rep.'][:58]})
+population = pd.read_csv(r'F:\\Data Plotting\\Assignment 4\\Population.csv')
+population = population.T
+population_df = pd.DataFrame({'Year':population.index[4:],'Egypt_Population':population.iloc[4:][0]})
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig, ax1 = plt.subplots()
+ax1.plot(Egypt_Inf.Year,Egypt_Inf.Egypt,label = 'Egypt infulation')
+ax1.set_xlabel('Year')
+ax1.set_xticks(['1960','1970','1980','1990','2000','2010'])
+# Make the y-axis label, ticks and tick labels match the line color.
+ax1.set_ylabel('Inflation', color='b')
+ax1.tick_params('y', colors='b')
+ax1.figure.set_figwidth(10)
+ax1.figure.set_figheight(10)
+
+ax2 = ax1.twinx()
+ax2.plot(population_df.Year,population_df.Egypt_Population,label = 'Egypt Population',color = 'r')
+ax2.set_ylabel('Poulation', color='r')
+ax2.tick_params('y', colors='r')
+ax2.set_xticks(['1960','1970','1980','1990','2000','2010'])
+
+#ax3 = ax1.twinx()
+#ax3 = ax1.twiny()
+plt.scatter(Egypt_Inf[Egypt_Inf['Year']=='1967']['Year'].item(),Egypt_Inf[Egypt_Inf['Year']=='1967']['Egypt'].item(),marker='v',label='First SINAI War')
+plt.scatter(Egypt_Inf[Egypt_Inf['Year']=='1973']['Year'].item(),Egypt_Inf[Egypt_Inf['Year']=='1973']['Egypt'].item(),marker='v',label='Second SINAI War')
+plt.scatter(Egypt_Inf[Egypt_Inf['Year']=='2011']['Year'].item(),Egypt_Inf[Egypt_Inf['Year']=='2011']['Egypt'].item(),marker='v',label='Revolution')
+
+fig.tight_layout()
+#ax3=plt.gca()
+#ax3.xticks(['1960','1970','1980','1990','2000','2010'], rotation=45)
+ax1.legend()
+#ax2.legend()
+plt.legend()
+plt.show()
